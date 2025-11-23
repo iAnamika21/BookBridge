@@ -345,7 +345,7 @@ A: Yes, but ensure you configure proper security settings and database for produ
 ---
 
 <div align="center">
-  <strong>Made with ❤️ for book lovers everywhere</strong>
+  <strong>Made with ❤️ by Ana for book lovers everywhere</strong>
   <br>
   <sub>BookBridge - Connecting Readers, One Book at a Time</sub>
 </div>
@@ -371,10 +371,11 @@ A: Yes, but ensure you configure proper security settings and database for produ
 - **Security**: A+ SSL rating
 - **SEO**: Optimized meta tags and structure
 
-### Author & Contact
+## Author & Contact
 
--Anamika
--mail:anamika.mamuni2@gmail.com
--X: @iAnamika_
+**Anamika**  
+**Email:** anamika.mamuni3@gmail.com  
+**GitHub:** [github.com/ianamika21](https://github.com/ianamika21)  
+**Twitter (X):** [@iAnamika_](https://x.com/iAnamika_)
 
-*Last updated: November 2025* 
+*Last updated: November 2025*

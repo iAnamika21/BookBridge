@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Payment Header -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 6rem 0 4rem; margin-top: 80px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 style="color: white; font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem;">
+                    Secure Payment
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                    Complete your payment securely with Razorpay
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Payment Content -->
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Payment Card -->
+                <div style="background: white; border-radius: 20px; padding: 3rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; text-align: center;">
+                    <!-- Razorpay Logo -->
+                    <div style="margin-bottom: 2rem;">
+                        <img src="https://razorpay.com/assets/razorpay-logo.svg" alt="Razorpay" style="height: 40px;">
+                        <p style="color: #6b7280; margin-top: 0.5rem; font-size: 0.9rem;">Secure Payment Gateway</p>
+                    </div>
+                    
+                    <!-- Payment Amount -->
+                    <div style="background: #f8fafc; border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
+                        <h3 style="color: #1f2937; margin-bottom: 0.5rem;">Total Amount</h3>
+                        <div style="font-size: 3rem; font-weight: 700; color: #059669; margin-bottom: 1rem;">₹{{amount}}</div>
+                        <p style="color: #6b7280;">Payment for {{products|length}} item{{products|length|pluralize}}</p>
+                    </div>
+                    
+                    <!-- Payment Button -->
+                    <button id="rzp-button" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1rem 3rem; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 2rem;">
+                        <i class="fas fa-lock" style="margin-right: 0.5rem;"></i>
+                        Pay Now Securely
+                    </button>
+                    
+                    <!-- Security Features -->
+                    <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 2rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-shield-alt" style="color: #10b981;"></i>
+                            <span style="color: #6b7280; font-size: 0.875rem;">SSL Encrypted</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-lock" style="color: #10b981;"></i>
+                            <span style="color: #6b7280; font-size: 0.875rem;">PCI Compliant</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-university" style="color: #10b981;"></i>
+                            <span style="color: #6b7280; font-size: 0.875rem;">Bank Grade Security</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Methods -->
+                <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <h4 style="color: #374151; font-weight: 600; margin-bottom: 1.5rem; text-align: center;">
+                        Accepted Payment Methods
+                    </h4>
+                    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                        <img src="https://img.icons8.com/color/48/visa.png" alt="Visa" style="height: 40px;">
+                        <img src="https://img.icons8.com/color/48/mastercard.png" alt="Mastercard" style="height: 40px;">
+                        <img src="https://img.icons8.com/color/48/rupay.png" alt="RuPay" style="height: 40px;">
+                        <img src="https://img.icons8.com/color/48/google-pay-india.png" alt="Google Pay" style="height: 40px;">
+                        <img src="https://img.icons8.com/color/48/phonepe.png" alt="PhonePe" style="height: 40px;">
+                        <img src="https://img.icons8.com/color/48/paytm.png" alt="Paytm" style="height: 40px;">
+                    </div>
+                    <p style="text-align: center; color: #6b7280; font-size: 0.875rem; margin-top: 1rem;">
+                        + Net Banking, UPI, and 50+ other payment methods
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Razorpay Checkout Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.getElementById('rzp-button').onclick = function(e) {
+    e.preventDefault();
+    
+    // Disable button to prevent multiple clicks
+    const button = e.target;
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    button.disabled = true;
+    
+    var options = {
+        "key": "{{razorpay_key}}", // Your Razorpay key
+        "amount": "{{amount|safe}}" * 100, // Amount in paisa
+        "currency": "{{currency}}",
+        "name": "BookBridge",
+        "description": "Payment for book order",
+        "image": "https://example.com/your_logo", // Your logo URL
+        "order_id": "{{razorpay_order_id}}", // Razorpay order ID
+        "handler": function (response) {
+            // Payment successful
+            console.log('Payment successful:', response);
+            
+            // Show success message
+            button.innerHTML = '<i class="fas fa-check"></i> Payment Successful!';
+            button.style.background = '#10b981';
+            
+            // Redirect to success page after a short delay
+            setTimeout(() => {
+                window.location.href = '/success?payment_id=' + response.razorpay_payment_id;
+            }, 2000);
+        },
+        "prefill": {
+            "name": "{{customer_name}}",
+            "email": "{{customer_email}}",
+            "contact": "{{customer_phone}}"
+        },
+        "notes": {
+            "address": "BookBridge Order"
+        },
+        "theme": {
+            "color": "#667eea"
+        },
+        "modal": {
+            "ondismiss": function() {
+                // Re-enable button if payment modal is closed
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+    };
+    
+    var rzp1 = new Razorpay(options);
+    
+    rzp1.on('payment.failed', function (response) {
+        // Payment failed
+        console.log('Payment failed:', response.error);
+        
+        // Show error message
+        button.innerHTML = '<i class="fas fa-times"></i> Payment Failed';
+        button.style.background = '#ef4444';
+        
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            button.disabled = false;
+        }, 3000);
+        
+        alert('Payment failed: ' + response.error.description);
+    });
+    
+    rzp1.open();
+}
+
+// Add hover effect to payment button
+document.getElementById('rzp-button').addEventListener('mouseenter', function() {
+    if (!this.disabled) {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 8px 16px rgba(102, 126, 234, 0.3)';
+    }
+});
+
+document.getElementById('rzp-button').addEventListener('mouseleave', function() {
+    if (!this.disabled) {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = 'none';
+    }
+});
+</script>
+
+<style>
+/* Payment button animations */
+#rzp-button {
+    transition: all 0.3s ease;
+}
+
+#rzp-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+/* Loading animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .section {
+        padding: 2rem 0;
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+}
+</style>
+{% endblock %} 

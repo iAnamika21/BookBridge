@@ -1,0 +1,302 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load cart %}
+
+{% block content %}
+<!-- Success Header -->
+<section style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 6rem 0 4rem; margin-top: 80px; position: relative; overflow: hidden;">
+    <!-- Animated Background Elements -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1;">
+        <div style="position: absolute; top: 20%; left: 10%; width: 100px; height: 100px; background: white; border-radius: 50%; animation: float 6s ease-in-out infinite;"></div>
+        <div style="position: absolute; top: 60%; right: 15%; width: 60px; height: 60px; background: white; border-radius: 50%; animation: float 6s ease-in-out infinite 2s;"></div>
+        <div style="position: absolute; bottom: 30%; left: 20%; width: 80px; height: 80px; background: white; border-radius: 50%; animation: float 6s ease-in-out infinite 4s;"></div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <!-- Success Icon -->
+                <div style="width: 120px; height: 120px; background: rgba(255, 255, 255, 0.2); border: 4px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; animation: successPulse 2s ease-in-out;">
+                    <i class="fas fa-check" style="font-size: 3rem; color: white;"></i>
+                </div>
+                
+                <h1 style="color: white; font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem;">
+                    Order Placed Successfully!
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                    Thank you for your purchase! Your order has been confirmed and will be processed shortly.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Order Summary Section -->
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Order Details Card -->
+                <div style="background: white; border-radius: 20px; padding: 3rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); margin-bottom: 2rem;">
+                    <div class="text-center mb-4">
+                        <h2 style="color: #1f2937; font-weight: 700; font-family: 'Playfair Display', serif; margin-bottom: 1rem;">
+                            <i class="fas fa-receipt" style="color: #10b981; margin-right: 0.5rem;"></i>
+                            Order Summary
+                        </h2>
+                        <p style="color: #6b7280;">Here are the details of your order</p>
+                    </div>
+
+                    <!-- Order Items -->
+                    <div style="background: #f8fafc; border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
+                        <h4 style="color: #374151; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-books" style="color: #10b981;"></i>
+                            Ordered Items
+                        </h4>
+                        
+                        <div class="order-items">
+                            {% for product in products %}
+                            <div style="background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <img src="{{product.image.url}}" alt="{{product.name}}" 
+                                             style="width: 80px; height: 100px; object-fit: cover; border-radius: 8px;">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5 style="color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">{{product.name}}</h5>
+                                        <p style="color: #6b7280; margin-bottom: 0.25rem;">
+                                            <i class="fas fa-user" style="margin-right: 0.5rem;"></i>
+                                            {{product.author}}
+                                        </p>
+                                        <p style="color: #6b7280; margin: 0;">
+                                            <i class="fas fa-tag" style="margin-right: 0.5rem;"></i>
+                                            {{product.category.name}}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <div style="background: #f3f4f6; border-radius: 8px; padding: 0.5rem;">
+                                            <small style="color: #6b7280; display: block;">Quantity</small>
+                                            <strong style="color: #1f2937; font-size: 1.1rem;">{{product|cart_quantity:request.session.cart}}</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <div style="background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 8px; padding: 0.5rem;">
+                                            <small style="color: #065f46; display: block;">Total</small>
+                                            <strong style="color: #059669; font-size: 1.25rem;">₹{{product|price_total:request.session.cart}}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Order Total -->
+                        <div style="border-top: 2px solid #e5e7eb; padding-top: 1.5rem; margin-top: 1.5rem;">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span style="color: #6b7280;">Subtotal:</span>
+                                        <span style="color: #374151; font-weight: 600;">₹{{products|total_cart_price:request.session.cart}}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span style="color: #6b7280;">Shipping:</span>
+                                        <span style="color: #10b981; font-weight: 600;">FREE</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span style="color: #6b7280;">Tax:</span>
+                                        <span style="color: #374151; font-weight: 600;">₹0</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                                        <div style="color: rgba(255,255,255,0.8); font-size: 0.875rem; margin-bottom: 0.5rem;">Grand Total</div>
+                                        <div style="color: white; font-size: 2rem; font-weight: 700;">₹{{products|total_cart_price:request.session.cart}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div style="background: linear-gradient(135deg, #ede9fe 0%, #f3f4f6 100%); border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
+                        <h4 style="color: #374151; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-info-circle" style="color: #8b5cf6;"></i>
+                            What's Next?
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-3">
+                                <div style="width: 60px; height: 60px; background: #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                    <i class="fas fa-envelope" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <h6 style="color: #374151; font-weight: 600;">Order Confirmation</h6>
+                                <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">You'll receive an email confirmation shortly</p>
+                            </div>
+                            <div class="col-md-4 text-center mb-3">
+                                <div style="width: 60px; height: 60px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                    <i class="fas fa-box" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <h6 style="color: #374151; font-weight: 600;">Processing</h6>
+                                <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">Your order will be packed within 24 hours</p>
+                            </div>
+                            <div class="col-md-4 text-center mb-3">
+                                <div style="width: 60px; height: 60px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                    <i class="fas fa-shipping-fast" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <h6 style="color: #374151; font-weight: 600;">Delivery</h6>
+                                <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">Expected delivery in 2-3 business days</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="text-center">
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <a href="{% url 'orders' %}" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
+                                <i class="fas fa-list-alt"></i>
+                                View All Orders
+                            </a>
+                            <a href="{% url 'shop' %}" style="background: white; color: #667eea; border: 2px solid #667eea; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
+                                <i class="fas fa-shopping-bag"></i>
+                                Continue Shopping
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Card -->
+                <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
+                    <h4 style="color: #374151; font-weight: 600; margin-bottom: 1rem;">Need Help?</h4>
+                    <p style="color: #6b7280; margin-bottom: 1.5rem;">Our customer support team is here to help you with any questions.</p>
+                    <a href="/feedback" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-headset"></i>
+                        Contact Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Success Animation */
+@keyframes successPulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Button Hover Effects */
+a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Hover Effects */
+.order-items > div:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .section {
+        padding: 2rem 0;
+    }
+    
+    .row > div {
+        margin-bottom: 2rem;
+    }
+    
+    .col-md-2, .col-md-4, .col-md-6 {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Loading Animation for Order Items */
+.order-items > div {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.order-items > div:nth-child(1) { animation-delay: 0.1s; }
+.order-items > div:nth-child(2) { animation-delay: 0.2s; }
+.order-items > div:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add confetti effect
+    setTimeout(() => {
+        createConfetti();
+    }, 500);
+    
+    // Auto-scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+function createConfetti() {
+    const colors = ['#10b981', '#667eea', '#f59e0b', '#ef4444', '#8b5cf6'];
+    const confettiCount = 50;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.style.cssText = `
+                position: fixed;
+                top: -10px;
+                left: ${Math.random() * 100}vw;
+                width: 10px;
+                height: 10px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                z-index: 10000;
+                pointer-events: none;
+                animation: confettiFall 3s linear;
+            `;
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                document.body.removeChild(confetti);
+            }, 3000);
+        }, i * 100);
+    }
+}
+
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes confettiFall {
+        to {
+            transform: translateY(100vh) rotate(360deg);
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

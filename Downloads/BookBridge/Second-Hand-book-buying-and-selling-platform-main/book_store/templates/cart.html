@@ -1,0 +1,272 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load cart %}
+
+{% block content %}
+<!-- Page Header -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 6rem 0 4rem; margin-top: 80px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 style="color: white; font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem;">
+                    <i class="fas fa-shopping-cart" style="margin-right: 1rem;"></i>
+                    Shopping Cart
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                    Review your selected books before checkout
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cart Content -->
+<section class="section">
+    <div class="container">
+        {% if products %}
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8 mb-4">
+                <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <h4 style="color: #1f2937; font-weight: 700; margin-bottom: 2rem; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-list" style="color: #667eea;"></i>
+                        Cart Items ({{products|length}})
+                    </h4>
+                    
+                    <div class="cart-items">
+                        {% for product in products %}
+                        <div class="cart-item" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; transition: all 0.3s ease;">
+                            <div class="row align-items-center">
+                                <!-- Product Image -->
+                                <div class="col-md-3">
+                                    <div style="position: relative; border-radius: 12px; overflow: hidden;">
+                                        <img src="{{product.image.url}}" alt="{{product.name}}" 
+                                             style="width: 100%; height: 150px; object-fit: cover;">
+                                    </div>
+                                </div>
+                                
+                                <!-- Product Details -->
+                                <div class="col-md-5">
+                                    <h5 style="color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">{{product.name}}</h5>
+                                    <p style="color: #6b7280; margin-bottom: 0.5rem;">
+                                        <i class="fas fa-user" style="margin-right: 0.5rem;"></i>
+                                        {{product.author}}
+                                    </p>
+                                    <p style="color: #6b7280; margin-bottom: 1rem;">
+                                        <i class="fas fa-tag" style="margin-right: 0.5rem;"></i>
+                                        {{product.category.name}}
+                                    </p>
+                                    <div style="color: #059669; font-weight: 700; font-size: 1.25rem;">
+                                        ₹{{product.price}} each
+                                    </div>
+                                </div>
+                                
+                                <!-- Quantity Controls -->
+                                <div class="col-md-2 text-center">
+                                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem;">
+                                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Quantity</p>
+                                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                            <form action="{% url 'cart' %}" method="post" style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="product" value="{{product.id}}">
+                                                <input type="hidden" name="remove" value="True">
+                                                <button type="submit" style="width: 35px; height: 35px; background: #ef4444; color: white; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </form>
+                                            <span style="font-weight: 700; font-size: 1.25rem; color: #1f2937; min-width: 40px; text-align: center;">
+                                                {{product|cart_quantity:request.session.cart}}
+                                            </span>
+                                            <form action="{% url 'cart' %}" method="post" style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="product" value="{{product.id}}">
+                                                <button type="submit" style="width: 35px; height: 35px; background: #10b981; color: white; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Total Price -->
+                                <div class="col-md-2 text-center">
+                                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 1rem;">
+                                        <p style="color: #16a34a; font-size: 0.875rem; margin-bottom: 0.5rem;">Total</p>
+                                        <div style="color: #059669; font-weight: 700; font-size: 1.5rem;">
+                                            ₹{{product|price_total:request.session.cart}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: sticky; top: 100px;">
+                    <h4 style="color: #1f2937; font-weight: 700; margin-bottom: 2rem; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-calculator" style="color: #667eea;"></i>
+                        Order Summary
+                    </h4>
+                    
+                    <div class="summary-details">
+                        <!-- Subtotal -->
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <span style="color: #6b7280;">Subtotal ({{products|length}} items)</span>
+                            <span style="font-weight: 600; color: #1f2937;">₹{{products|total_cart_price:request.session.cart}}</span>
+                        </div>
+                        
+                        <!-- Shipping -->
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <span style="color: #6b7280;">Shipping</span>
+                            <span style="font-weight: 600; color: #059669;">FREE</span>
+                        </div>
+                        
+                        <!-- Tax -->
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <span style="color: #6b7280;">Tax</span>
+                            <span style="font-weight: 600; color: #1f2937;">₹0</span>
+                        </div>
+                        
+                        <!-- Total -->
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; padding: 1rem; background: #f8fafc; border-radius: 12px;">
+                            <span style="font-size: 1.25rem; font-weight: 700; color: #1f2937;">Total</span>
+                            <span style="font-size: 1.25rem; font-weight: 700; color: #059669;">₹{{products|total_cart_price:request.session.cart}}</span>
+                        </div>
+                        
+                        <!-- Checkout Button -->
+                        <a href="/checkout" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1rem; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1rem; display: inline-flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <i class="fas fa-credit-card" style="margin-right: 0.5rem;"></i>
+                            Proceed to Checkout
+                        </a>
+                        
+                        <!-- Continue Shopping -->
+                        <a href="{% url 'shop' %}" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 1rem; border: 2px solid #667eea; color: #667eea; text-decoration: none; border-radius: 12px; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Empty Cart -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div style="background: white; border-radius: 20px; padding: 4rem 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                        <i class="fas fa-shopping-cart" style="font-size: 3rem; color: #9ca3af;"></i>
+                    </div>
+                    <h3 style="color: #1f2937; font-weight: 700; margin-bottom: 1rem; font-family: 'Playfair Display', serif;">Your Cart is Empty</h3>
+                    <p style="color: #6b7280; margin-bottom: 2rem; line-height: 1.6;">
+                        Looks like you haven't added any books to your cart yet. Start exploring our amazing collection!
+                    </p>
+                    <a href="{% url 'shop' %}" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-book"></i>
+                        Browse Books
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+/* Cart Item Hover Effects */
+.cart-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: #667eea;
+}
+
+/* Button Hover Effects */
+.cart-item button:hover {
+    transform: scale(1.1);
+}
+
+.cart-item button[style*="ef4444"]:hover {
+    background: #dc2626 !important;
+}
+
+.cart-item button[style*="10b981"]:hover {
+    background: #059669 !important;
+}
+
+/* Checkout Button Hover */
+form button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* Continue Shopping Button Hover */
+a[style*="border: 2px solid"]:hover {
+    background-color: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cart-item .row {
+        text-align: center;
+    }
+    
+    .cart-item .col-md-3,
+    .cart-item .col-md-5,
+    .cart-item .col-md-2 {
+        margin-bottom: 1rem;
+    }
+    
+    .order-summary {
+        position: static !important;
+        margin-top: 2rem;
+    }
+}
+
+/* Animation */
+.cart-item {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add loading states to quantity buttons
+    const quantityButtons = document.querySelectorAll('.cart-item button');
+    quantityButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            const originalClass = icon.className;
+            icon.className = 'fas fa-spinner fa-spin';
+            
+            setTimeout(() => {
+                icon.className = originalClass;
+            }, 1000);
+        });
+    });
+    
+    // Add smooth animations to cart updates
+    const cartItems = document.querySelectorAll('.cart-item');
+    cartItems.forEach((item, index) => {
+        item.style.animationDelay = `${index * 0.1}s`;
+    });
+});
+</script>
+{% endblock %}

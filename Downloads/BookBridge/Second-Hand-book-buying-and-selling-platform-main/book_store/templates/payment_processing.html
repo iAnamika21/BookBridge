@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Payment Processing Header -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 6rem 0 4rem; margin-top: 80px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 style="color: white; font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem;">
+                    Payment Processing
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                    Please complete your payment to confirm your order
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Payment Content -->
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Payment Method Display -->
+                <div style="background: white; border-radius: 20px; padding: 3rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; text-align: center;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                        {% if payment_method == "Online Payment" %}
+                            <i class="fas fa-credit-card" style="font-size: 2.5rem; color: white;"></i>
+                        {% elif payment_method == "UPI Payment" %}
+                            <i class="fas fa-mobile-alt" style="font-size: 2.5rem; color: white;"></i>
+                        {% elif payment_method == "Net Banking" %}
+                            <i class="fas fa-university" style="font-size: 2.5rem; color: white;"></i>
+                        {% elif payment_method == "Digital Wallet" %}
+                            <i class="fas fa-wallet" style="font-size: 2.5rem; color: white;"></i>
+                        {% endif %}
+                    </div>
+                    
+                    <h2 style="color: #1f2937; font-weight: 700; margin-bottom: 1rem;">{{payment_method}}</h2>
+                    <p style="color: #6b7280; margin-bottom: 2rem;">Please complete your payment of <strong style="color: #059669;">₹{{amount}}</strong></p>
+                    
+                    <!-- Payment Simulation -->
+                    <div id="paymentSimulation" style="display: none;">
+                        <div style="background: #f3f4f6; border-radius: 12px; padding: 2rem; margin-bottom: 2rem;">
+                            <div class="payment-steps">
+                                <div class="payment-step" id="step1" style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: white; border-radius: 8px;">
+                                    <div style="width: 40px; height: 40px; background: #667eea; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                        <i class="fas fa-lock" style="color: white;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 style="color: #1f2937; margin: 0;">Securing Payment Gateway</h6>
+                                        <p style="color: #6b7280; margin: 0; font-size: 0.875rem;">Establishing secure connection...</p>
+                                    </div>
+                                    <div class="step-loader" style="margin-left: auto;">
+                                        <i class="fas fa-spinner fa-spin" style="color: #667eea;"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="payment-step" id="step2" style="display: none; align-items: center; margin-bottom: 1rem; padding: 1rem; background: white; border-radius: 8px;">
+                                    <div style="width: 40px; height: 40px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                        <i class="fas fa-shield-alt" style="color: white;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 style="color: #1f2937; margin: 0;">Verifying Payment Details</h6>
+                                        <p style="color: #6b7280; margin: 0; font-size: 0.875rem;">Validating transaction information...</p>
+                                    </div>
+                                    <div class="step-loader" style="margin-left: auto;">
+                                        <i class="fas fa-spinner fa-spin" style="color: #10b981;"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="payment-step" id="step3" style="display: none; align-items: center; margin-bottom: 1rem; padding: 1rem; background: white; border-radius: 8px;">
+                                    <div style="width: 40px; height: 40px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                        <i class="fas fa-credit-card" style="color: white;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 style="color: #1f2937; margin: 0;">Processing Payment</h6>
+                                        <p style="color: #6b7280; margin: 0; font-size: 0.875rem;">Completing your transaction...</p>
+                                    </div>
+                                    <div class="step-loader" style="margin-left: auto;">
+                                        <i class="fas fa-spinner fa-spin" style="color: #f59e0b;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div style="background: #e5e7eb; border-radius: 10px; height: 8px; margin-bottom: 2rem; overflow: hidden;">
+                            <div id="progressBar" style="background: linear-gradient(90deg, #667eea, #10b981, #f59e0b); height: 100%; width: 0%; transition: width 0.5s ease; border-radius: 10px;"></div>
+                        </div>
+                        
+                        <div id="paymentStatus" style="text-align: center;">
+                            <p style="color: #6b7280;">Please wait while we process your payment securely...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Start Payment Button -->
+                    <button id="startPayment" onclick="startPaymentProcess()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1rem 3rem; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-play" style="margin-right: 0.5rem;"></i>
+                        Start Payment Process
+                    </button>
+                </div>
+                
+                <!-- Payment Security Info -->
+                <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <h4 style="color: #374151; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-shield-alt" style="color: #10b981;"></i>
+                        Payment Security
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-3">
+                            <div style="width: 60px; height: 60px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                <i class="fas fa-lock" style="color: white; font-size: 1.5rem;"></i>
+                            </div>
+                            <h6 style="color: #374151; font-weight: 600;">SSL Encrypted</h6>
+                            <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">Your data is protected with 256-bit SSL encryption</p>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div style="width: 60px; height: 60px; background: #667eea; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                <i class="fas fa-certificate" style="color: white; font-size: 1.5rem;"></i>
+                            </div>
+                            <h6 style="color: #374151; font-weight: 600;">PCI Compliant</h6>
+                            <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">Payment processing meets industry standards</p>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div style="width: 60px; height: 60px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                <i class="fas fa-user-shield" style="color: white; font-size: 1.5rem;"></i>
+                            </div>
+                            <h6 style="color: #374151; font-weight: 600;">Privacy Protected</h6>
+                            <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">We never store your payment information</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Payment Animation */
+.payment-step {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+.payment-step.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.payment-step.completed .step-loader {
+    display: none;
+}
+
+.payment-step.completed::after {
+    content: '✓';
+    color: #10b981;
+    font-weight: bold;
+    margin-left: auto;
+}
+
+/* Button Animations */
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+</style>
+
+<script>
+let currentStep = 0;
+const steps = ['step1', 'step2', 'step3'];
+
+function startPaymentProcess() {
+    // Hide start button and show simulation
+    document.getElementById('startPayment').style.display = 'none';
+    document.getElementById('paymentSimulation').style.display = 'block';
+    
+    // Start the payment simulation
+    processPaymentSteps();
+}
+
+function processPaymentSteps() {
+    const progressBar = document.getElementById('progressBar');
+    
+    function showNextStep() {
+        if (currentStep < steps.length) {
+            // Show current step
+            const stepElement = document.getElementById(steps[currentStep]);
+            stepElement.style.display = 'flex';
+            stepElement.classList.add('active');
+            
+            // Update progress bar
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            progressBar.style.width = progress + '%';
+            
+            // Complete previous step
+            if (currentStep > 0) {
+                const prevStep = document.getElementById(steps[currentStep - 1]);
+                prevStep.classList.add('completed');
+                prevStep.querySelector('.step-loader').style.display = 'none';
+                const checkmark = document.createElement('i');
+                checkmark.className = 'fas fa-check';
+                checkmark.style.color = '#10b981';
+                checkmark.style.marginLeft = 'auto';
+                prevStep.appendChild(checkmark);
+            }
+            
+            currentStep++;
+            
+            // Schedule next step
+            setTimeout(showNextStep, 2000);
+        } else {
+            // Payment complete
+            completePayment();
+        }
+    }
+    
+    showNextStep();
+}
+
+function completePayment() {
+    // Complete final step
+    const lastStep = document.getElementById(steps[steps.length - 1]);
+    lastStep.classList.add('completed');
+    lastStep.querySelector('.step-loader').style.display = 'none';
+    const checkmark = document.createElement('i');
+    checkmark.className = 'fas fa-check';
+    checkmark.style.color = '#10b981';
+    checkmark.style.marginLeft = 'auto';
+    lastStep.appendChild(checkmark);
+    
+    // Update status
+    document.getElementById('paymentStatus').innerHTML = `
+        <div style="background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 12px; padding: 2rem; margin-top: 2rem;">
+            <div style="width: 80px; height: 80px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                <i class="fas fa-check" style="color: white; font-size: 2rem;"></i>
+            </div>
+            <h3 style="color: #065f46; margin-bottom: 1rem;">Payment Successful!</h3>
+            <p style="color: #047857; margin-bottom: 2rem;">Your payment has been processed successfully. Redirecting to order confirmation...</p>
+            <div class="spinner-border text-success" role="status" style="margin: 0 auto;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    `;
+    
+    // Redirect to success page after 3 seconds
+    setTimeout(() => {
+        window.location.href = '/success';
+    }, 3000);
+}
+
+// Auto-start simulation after 2 seconds for demo
+setTimeout(() => {
+    if (document.getElementById('startPayment').style.display !== 'none') {
+        startPaymentProcess();
+    }
+}, 2000);
+</script>
+{% endblock %} 

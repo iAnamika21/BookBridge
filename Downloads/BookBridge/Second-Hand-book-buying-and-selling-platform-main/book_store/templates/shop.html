@@ -1,0 +1,577 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load cart %}
+
+{% block content %}
+<!-- Page Header -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 6rem 0 4rem; margin-top: 80px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 style="color: white; font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem;">
+                    Book Collection
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                    Discover thousands of quality second-hand books at unbeatable prices
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Shop Content -->
+<section class="section">
+    <div class="container-fluid px-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="filter-sidebar" style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: sticky; top: 100px;">
+                    <h4 style="color: #1f2937; font-weight: 700; margin-bottom: 2rem; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-filter" style="color: #667eea;"></i>
+                        Filter Books
+                    </h4>
+                    
+                    <!-- Categories Filter -->
+                    <div class="filter-section mb-4">
+                        <h6 style="color: #374151; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.875rem;">
+                            Categories
+                        </h6>
+                        <div class="category-filters">
+                            <a href="/shop" class="filter-item {% if not request.GET.category %}active{% endif %}" 
+                               style="display: flex; align-items: center; padding: 0.75rem 1rem; border-radius: 8px; text-decoration: none; color: #6b7280; margin-bottom: 0.5rem; transition: all 0.3s ease; border: 1px solid #e5e7eb;">
+                                <i class="fas fa-th-large" style="margin-right: 0.75rem; width: 16px;"></i>
+                                All Books
+                                <span style="margin-left: auto; background: #f3f4f6; color: #6b7280; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                    {{products|length}}
+                                </span>
+                            </a>
+                            {% for category in categories %}
+                            <a href="/shop/?category={{category.id}}" class="filter-item" 
+                               style="display: flex; align-items: center; padding: 0.75rem 1rem; border-radius: 8px; text-decoration: none; color: #6b7280; margin-bottom: 0.5rem; transition: all 0.3s ease; border: 1px solid #e5e7eb;">
+                                <i class="fas fa-book" style="margin-right: 0.75rem; width: 16px;"></i>
+                                {{category.name}}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Price Range Filter -->
+                    <div class="filter-section mb-4">
+                        <h6 style="color: #374151; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.875rem;">
+                            Price Range
+                        </h6>
+                        <div class="price-ranges">
+                            <label style="display: flex; align-items: center; margin-bottom: 0.5rem; cursor: pointer; color: #6b7280;">
+                                <input type="checkbox" style="margin-right: 0.75rem;">
+                                Under ₹200
+                            </label>
+                            <label style="display: flex; align-items: center; margin-bottom: 0.5rem; cursor: pointer; color: #6b7280;">
+                                <input type="checkbox" style="margin-right: 0.75rem;">
+                                ₹200 - ₹500
+                            </label>
+                            <label style="display: flex; align-items: center; margin-bottom: 0.5rem; cursor: pointer; color: #6b7280;">
+                                <input type="checkbox" style="margin-right: 0.75rem;">
+                                ₹500 - ₹1000
+                            </label>
+                            <label style="display: flex; align-items: center; margin-bottom: 0.5rem; cursor: pointer; color: #6b7280;">
+                                <input type="checkbox" style="margin-right: 0.75rem;">
+                                Above ₹1000
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="filter-section">
+                        <h6 style="color: #374151; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.875rem;">
+                            Quick Actions
+                        </h6>
+                        <a href="/sell" style="display: flex; align-items: center; padding: 1rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; transition: transform 0.3s ease; margin-bottom: 1rem;">
+                            <i class="fas fa-plus-circle" style="margin-right: 0.75rem;"></i>
+                            Sell Your Books
+                        </a>
+                        <a href="/feedback" style="display: flex; align-items: center; padding: 1rem; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; transition: transform 0.3s ease;">
+                            <i class="fas fa-comment" style="margin-right: 0.75rem;"></i>
+                            Give Feedback
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div class="col-lg-9 col-md-8" data-user-authenticated="{% if request.session.customer %}true{% else %}false{% endif %}">
+                <!-- Search and Sort Header -->
+                <div class="shop-header mb-4" style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="search-box">
+                                <div style="position: relative;">
+                                    <input type="text" placeholder="Search books..." 
+                                           style="width: 100%; padding: 0.75rem 1rem 0.75rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: border-color 0.3s ease;">
+                                    <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="sort-options" style="display: flex; align-items: center; justify-content: end; gap: 1rem; flex-wrap: wrap;">
+                                <span style="color: #6b7280; font-size: 0.875rem;">Sort by:</span>
+                                <select style="padding: 0.5rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; background: white; color: #374151;">
+                                    <option>Latest</option>
+                                    <option>Price: Low to High</option>
+                                    <option>Price: High to Low</option>
+                                    <option>Name: A to Z</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="products-grid" id="products">
+                    <div class="row g-4">
+                        {% for product in products %}
+                        <div class="col-lg-4 col-md-6 col-sm-6" id="{{product.id}}">
+                            <div class="product-card" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column;">
+                                <!-- Product Image -->
+                                <div class="product-image" style="position: relative; overflow: hidden; height: 250px;">
+                                    <a href="view_p/{{product.id}}">
+                                        <img src="{{product.image.url}}" alt="{{product.name}}" 
+                                             style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
+                                    </a>
+                                    <div class="product-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%); opacity: 0; transition: opacity 0.3s ease;">
+                                        <div style="position: absolute; bottom: 1rem; left: 1rem; right: 1rem;">
+                                            <a href="view_p/{{product.id}}" style="background: white; color: #1f2937; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem;">
+                                                <i class="fas fa-eye"></i>
+                                                Quick View
+                                            </a>
+                                        </div>
+                                    </div>
+                                    {% if product.stock <= 5 %}
+                                    <div style="position: absolute; top: 1rem; left: 1rem; background: #ef4444; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">
+                                        Low Stock
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Product Info -->
+                                <div class="product-info p-3" style="flex: 1; display: flex; flex-direction: column;">
+                                    <h5 style="color: #1f2937; margin-bottom: 0.5rem; font-weight: 600; font-size: 1.1rem; line-height: 1.4;">
+                                        {{product.name}}
+                                    </h5>
+                                    
+                                    <div class="product-meta mb-2">
+                                        <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">
+                                            <i class="fas fa-user" style="margin-right: 0.5rem;"></i>
+                                            {{product.author}}
+                                        </p>
+                                        <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">
+                                            <i class="fas fa-tag" style="margin-right: 0.5rem;"></i>
+                                            {{product.category.name}}
+                                        </p>
+                                    </div>
+
+                                    <!-- Rating (placeholder) -->
+                                    <div class="rating mb-2">
+                                        <i class="fas fa-star" style="color: #fbbf24; font-size: 0.875rem;"></i>
+                                        <i class="fas fa-star" style="color: #fbbf24; font-size: 0.875rem;"></i>
+                                        <i class="fas fa-star" style="color: #fbbf24; font-size: 0.875rem;"></i>
+                                        <i class="fas fa-star" style="color: #fbbf24; font-size: 0.875rem;"></i>
+                                        <i class="far fa-star" style="color: #fbbf24; font-size: 0.875rem;"></i>
+                                        <span style="color: #6b7280; font-size: 0.75rem; margin-left: 0.5rem;">(4.0)</span>
+                                    </div>
+
+                                    <!-- Price -->
+                                    <div class="price-section mb-3" style="margin-top: auto;">
+                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                            <span style="color: #059669; font-weight: 700; font-size: 1.5rem;">₹{{product.price}}</span>
+                                            <span style="color: #6b7280; font-size: 0.875rem;">
+                                                <i class="fas fa-boxes" style="margin-right: 0.25rem;"></i>
+                                                {{product.stock}} left
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add to Cart Section -->
+                                    <div class="cart-section">
+                                        {% if request.session.customer %}
+                                            {% if product|is_in_cart:request.session.cart %}
+                                            <div style="border: 2px solid #e5e7eb; border-radius: 12px; padding: 0.75rem; background: #f9fafb;">
+                                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                                                    <span style="color: #374151; font-weight: 600; font-size: 0.875rem;">In Cart:</span>
+                                                    <span style="color: #059669; font-weight: 700;">{{product|cart_quantity:request.session.cart}}</span>
+                                                </div>
+                                                <div style="display: flex; gap: 0.5rem;">
+                                                    <form action="{% url 'shop' %}#{{product.id}}" method="post" style="flex: 1;">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="product" value="{{product.id}}">
+                                                        <input type="hidden" name="remove" value="True">
+                                                        <button type="submit" style="width: 100%; background: #ef4444; color: white; border: none; padding: 0.5rem; border-radius: 8px; font-weight: 600; transition: background 0.3s ease;">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                    </form>
+                                                    <form action="{% url 'shop' %}#{{product.id}}" method="post" style="flex: 1;">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="product" value="{{product.id}}">
+                                                        <button type="submit" style="width: 100%; background: #10b981; color: white; border: none; padding: 0.5rem; border-radius: 8px; font-weight: 600; transition: background 0.3s ease;">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            {% else %}
+                                            <form action="{% url 'shop' %}#{{product.id}}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="product" value="{{product.id}}">
+                                                <button type="submit" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.75rem; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                                    <i class="fas fa-cart-plus"></i>
+                                                    Add to Cart
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                        {% else %}
+                                            <!-- Not logged in - show login prompt -->
+                                            <button onclick="showLoginPrompt()" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 0.75rem; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                                <i class="fas fa-cart-plus"></i>
+                                                Add to Cart
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination-section text-center mt-5">
+                    <nav>
+                        <ul style="display: flex; justify-content: center; gap: 0.5rem; list-style: none; margin: 0; padding: 0;">
+                            <li>
+                                <a href="#" style="padding: 0.75rem 1rem; background: white; border: 1px solid #e5e7eb; border-radius: 8px; color: #6b7280; text-decoration: none; transition: all 0.3s ease;">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" style="padding: 0.75rem 1rem; background: #667eea; border: 1px solid #667eea; border-radius: 8px; color: white; text-decoration: none;">1</a>
+                            </li>
+                            <li>
+                                <a href="#" style="padding: 0.75rem 1rem; background: white; border: 1px solid #e5e7eb; border-radius: 8px; color: #6b7280; text-decoration: none; transition: all 0.3s ease;">2</a>
+                            </li>
+                            <li>
+                                <a href="#" style="padding: 0.75rem 1rem; background: white; border: 1px solid #e5e7eb; border-radius: 8px; color: #6b7280; text-decoration: none; transition: all 0.3s ease;">3</a>
+                            </li>
+                            <li>
+                                <a href="#" style="padding: 0.75rem 1rem; background: white; border: 1px solid #e5e7eb; border-radius: 8px; color: #6b7280; text-decoration: none; transition: all 0.3s ease;">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Product Card Hover Effects */
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+/* Filter Item Hover */
+.filter-item:hover,
+.filter-item.active {
+    background-color: #f3f4f6;
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.filter-item.active {
+    background-color: #ede9fe;
+    border-color: #667eea;
+    color: #667eea;
+}
+
+/* Search Input Focus */
+.search-box input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Quick Action Buttons */
+.filter-section a:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filter-sidebar {
+        position: static !important;
+        margin-bottom: 2rem;
+    }
+    
+    .shop-header .row {
+        gap: 1rem;
+    }
+    
+    .sort-options {
+        justify-content: start !important;
+    }
+}
+
+/* Animations */
+.product-card {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading States */
+.product-card.loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Custom Scrollbar */
+.filter-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.filter-sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.filter-sidebar::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 4px;
+}
+
+.filter-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #5a67d8;
+}
+
+/* Add to cart button states */
+.submitting {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Improved button hover effects */
+button[type="submit"]:hover:not(.submitting) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth transitions for all buttons */
+button[type="submit"] {
+    transition: all 0.3s ease;
+}
+</style>
+
+<script>
+// Show login prompt for non-authenticated users
+function showLoginPrompt() {
+    if (confirm('You need to sign in to add items to your cart. Would you like to sign in now?')) {
+        window.location.href = "{% url 'login' %}";
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Check authentication status from data attribute
+    const productsSection = document.querySelector('[data-user-authenticated]');
+    const isUserLoggedIn = productsSection ? productsSection.getAttribute('data-user-authenticated') === 'true' : false;
+    
+    // Debug logging
+    console.log('Products section found:', !!productsSection);
+    console.log('User authenticated attribute:', productsSection ? productsSection.getAttribute('data-user-authenticated') : 'not found');
+    console.log('Is user logged in:', isUserLoggedIn);
+    
+    // Search functionality
+    const searchInput = document.querySelector('.search-box input');
+    const productCards = document.querySelectorAll('.product-card');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            productCards.forEach(card => {
+                const productName = card.querySelector('h5').textContent.toLowerCase();
+                const author = card.querySelector('.product-meta p').textContent.toLowerCase();
+                
+                if (productName.includes(searchTerm) || author.includes(searchTerm)) {
+                    card.closest('.col-lg-4').style.display = 'block';
+                } else {
+                    card.closest('.col-lg-4').style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Add to cart button animations and feedback
+    const addToCartButtons = document.querySelectorAll('form[action*="shop"] button[type="submit"], form[action*="cart"] button[type="submit"]');
+    console.log('Found add to cart buttons:', addToCartButtons.length);
+    
+    addToCartButtons.forEach((button, index) => {
+        console.log(`Button ${index}:`, button);
+        button.addEventListener('click', function(e) {
+            try {
+                const form = this.closest('form');
+                console.log('Button clicked, form action:', form ? form.action : 'no form found');
+                console.log('User logged in:', isUserLoggedIn);
+                
+                // Check if user is logged in (only for add to cart, not for quantity changes)
+                const isRemoveAction = form && form.querySelector('input[name="remove"]');
+                if (!isUserLoggedIn && !isRemoveAction) {
+                    e.preventDefault();
+                    console.log('Preventing submission - user not logged in');
+                    if (typeof showLoginPrompt === 'function') {
+                        showLoginPrompt();
+                    } else {
+                        alert('Please log in to add items to cart');
+                    }
+                    return;
+                }
+                
+                // For logged in users, just add simple visual feedback
+                console.log('Allowing form submission');
+                
+                // Simple visual feedback without interfering with form submission
+                if (!this.classList.contains('submitting')) {
+                    this.classList.add('submitting');
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (isRemoveAction ? 'Updating...' : 'Adding...');
+                }
+            } catch (error) {
+                console.error('Error in add to cart button handler:', error);
+            }
+        });
+    });
+
+    // Smooth scroll to product after form submission
+    const hash = window.location.hash;
+    if (hash) {
+        const element = document.querySelector(hash);
+        if (element) {
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.style.animation = 'pulse 1s';
+                
+                // Show success notification
+                showSuccessNotification('Item updated in cart!');
+            }, 100);
+        }
+    }
+    
+    // Initialize cart count update
+    updateCartCount();
+});
+
+// Function to show success notification
+function showSuccessNotification(message) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+    `;
+    notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    
+    document.body.appendChild(notification);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+// Function to update cart count
+function updateCartCount() {
+    const cartCount = document.querySelector('.cart-count');
+    if (cartCount) {
+        // Get cart count from the cart button display
+        const currentCount = cartCount.textContent || '0';
+        const count = parseInt(currentCount);
+        
+        if (count > 0) {
+            cartCount.style.display = 'flex';
+        } else {
+            cartCount.style.display = 'none';
+        }
+    }
+}
+
+// Pulse animation for highlighted products
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+    
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

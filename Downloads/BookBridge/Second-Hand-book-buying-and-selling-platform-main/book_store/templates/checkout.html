@@ -1,0 +1,422 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cart %}
+
+{% block content %}
+<!-- Page Header -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 6rem 0 4rem; margin-top: 80px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 style="color: white; font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem;">
+                    Checkout
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                    Complete your order by providing shipping information
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <!-- Shipping Information Form -->
+            <div class="col-lg-8">
+                <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 2rem;">
+                    <h3 style="color: #1f2937; font-weight: 700; margin-bottom: 2rem; font-family: 'Playfair Display', serif;">
+                        <i class="fas fa-shipping-fast" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Shipping Information
+                    </h3>
+
+                    {% if error %}
+                    <div style="background: #fee2e2; border: 1px solid #fecaca; color: #dc2626; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <i class="fas fa-exclamation-triangle"></i> {{error}}
+                    </div>
+                    {% endif %}
+
+                    <form action="/checkout" method="post" id="checkoutForm">
+                        {% csrf_token %}
+                        
+                        <!-- Contact Information -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-phone" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Phone Number *
+                                    </label>
+                                    <input type="tel" name="phone" required
+                                           placeholder="Enter your phone number"
+                                           value="{{values.phone}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-city" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        City *
+                                    </label>
+                                    <input type="text" name="city" required
+                                           placeholder="Enter your city"
+                                           value="{{values.city|default:'Dharwad'}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Information -->
+                        <div class="form-group mb-4">
+                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                <i class="fas fa-home" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                Street Address *
+                            </label>
+                            <textarea name="address" required rows="3"
+                                      placeholder="Enter your complete address"
+                                      style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb; resize: vertical;">{{values.address}}</textarea>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-map-marker-alt" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Landmark
+                                    </label>
+                                    <input type="text" name="landmark"
+                                           placeholder="Enter nearby landmark"
+                                           value="{{values.landmark|default:'Hanuman Temple'}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-map-pin" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        PIN Code *
+                                    </label>
+                                    <input type="number" name="pin" required
+                                           placeholder="Enter PIN code"
+                                           value="{{values.pin|default:'580001'}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="form-group mb-4">
+                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                <i class="fas fa-credit-card" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                Payment Method *
+                            </label>
+                            <div style="display: grid; gap: 1rem;">
+                                <!-- Cash on Delivery -->
+                                <div class="payment-option" style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onclick="selectPayment('cod', this)">
+                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 0;">
+                                        <input type="radio" name="mode" value="Cash On Delivery" checked style="margin-right: 1rem;" id="cod">
+                                        <div style="flex: 1;">
+                                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                                <i class="fas fa-money-bill-wave" style="color: #10b981; font-size: 1.5rem;"></i>
+                                                <span style="font-weight: 600; color: #1f2937; font-size: 1.1rem;">Cash on Delivery</span>
+                                            </div>
+                                            <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Pay when your order arrives at your doorstep. No online transaction required.</p>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <!-- Razorpay Online Payment -->
+                                <div class="payment-option" style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onclick="selectPayment('razorpay', this)">
+                                    <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 0;">
+                                        <input type="radio" name="mode" value="Online Payment" style="margin-right: 1rem;" id="razorpay">
+                                        <div style="flex: 1;">
+                                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                                <i class="fas fa-credit-card" style="color: #667eea; font-size: 1.5rem;"></i>
+                                                <span style="font-weight: 600; color: #1f2937; font-size: 1.1rem;">Online Payment</span>
+                                                <img src="https://razorpay.com/assets/razorpay-logo.svg" alt="Razorpay" style="height: 20px; margin-left: 0.5rem;">
+                                            </div>
+                                            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 0.5rem;">Pay securely online using Credit/Debit Card, UPI, Net Banking, or Wallets</p>
+                                            <div style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.75rem;">
+                                                <span style="font-size: 0.8rem; color: #6b7280;">Accepted:</span>
+                                                <img src="https://img.icons8.com/color/24/visa.png" alt="Visa" style="height: 20px;">
+                                                <img src="https://img.icons8.com/color/24/mastercard.png" alt="Mastercard" style="height: 20px;">
+                                                <img src="https://img.icons8.com/color/24/rupay.png" alt="RuPay" style="height: 20px;">
+                                                <img src="https://img.icons8.com/color/24/google-pay-india.png" alt="UPI" style="height: 20px;">
+                                                <span style="font-size: 0.8rem; color: #667eea;">+more</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Payment Security Info -->
+                            <div style="margin-top: 1.5rem; padding: 1rem; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <i class="fas fa-shield-alt" style="color: #059669;"></i>
+                                    <span style="color: #065f46; font-weight: 600; font-size: 0.875rem;">100% Secure Payment</span>
+                                </div>
+                                <p style="color: #047857; font-size: 0.8rem; margin: 0;">All online payments are processed through Razorpay's secure payment gateway. Your financial information is encrypted and completely safe.</p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div style="display: flex; gap: 1rem; justify-content: space-between; margin-top: 2rem;">
+                            <a href="/cart" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; padding: 1rem; border: 2px solid #667eea; color: #667eea; text-decoration: none; border-radius: 12px; font-weight: 600; transition: all 0.3s ease;">
+                                <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+                                Back to Cart
+                            </a>
+                            <button type="submit" style="flex: 2; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1rem; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                                <i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>
+                                Place Order
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: sticky; top: 100px;">
+                    <h3 style="color: #1f2937; font-weight: 700; margin-bottom: 2rem; font-family: 'Playfair Display', serif;">
+                        <i class="fas fa-shopping-cart" style="color: #667eea; margin-right: 0.5rem;"></i>
+                        Order Summary
+                    </h3>
+
+                    <!-- Cart Items -->
+                    {% for product in products %}
+                    <div style="display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid #e5e7eb;">
+                        <img src="{{product.image.url}}" alt="{{product.name}}" 
+                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 1rem;">
+                        <div style="flex: 1;">
+                            <h6 style="color: #1f2937; font-weight: 600; margin-bottom: 0.25rem; font-size: 0.9rem;">{{product.name}}</h6>
+                            <p style="color: #6b7280; font-size: 0.8rem; margin: 0;">Qty: {{product|cart_quantity:request.session.cart}}</p>
+                        </div>
+                        <span style="color: #059669; font-weight: 700;">₹{{product|price_total:request.session.cart}}</span>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Total -->
+                    <div style="display: flex; justify-content: space-between; margin-top: 1.5rem; padding: 1rem; background: #f8fafc; border-radius: 12px;">
+                        <span style="font-size: 1.25rem; font-weight: 700; color: #1f2937;">Total</span>
+                        <span style="font-size: 1.25rem; font-weight: 700; color: #059669;">₹{{products|total_cart_price:request.session.cart}}</span>
+                    </div>
+
+                    <!-- Security Info -->
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #ecfdf5; border-radius: 12px; border: 1px solid #d1fae5;">
+                        <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                            <i class="fas fa-shield-alt" style="color: #059669; margin-right: 0.5rem;"></i>
+                            <span style="color: #065f46; font-weight: 600; font-size: 0.875rem;">Secure Checkout</span>
+                        </div>
+                        <p style="color: #047857; font-size: 0.8rem; margin: 0;">Your personal information is protected and secure.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Form Focus Effects */
+input:focus, textarea:focus, select:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Button Hover Effects */
+button:hover, a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .section {
+        padding: 2rem 0;
+    }
+    
+    .row > div {
+        margin-bottom: 2rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form validation
+    const form = document.getElementById('checkoutForm');
+    const inputs = form.querySelectorAll('input[required], textarea[required]');
+    
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                input.style.borderColor = '#ef4444';
+                isValid = false;
+            } else {
+                input.style.borderColor = '#e5e7eb';
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please fill in all required fields.');
+            return;
+        }
+        
+        // Show loading state on form submission
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitButton.disabled = true;
+        
+        // For demo purposes - in real app, you'd handle payment processing here
+        const selectedPayment = document.querySelector('input[name="mode"]:checked').value;
+        if (selectedPayment !== 'Cash On Delivery') {
+            // Simulate payment processing
+            setTimeout(() => {
+                alert('Payment processing would happen here. For demo, continuing with order...');
+                form.submit();
+            }, 2000);
+            e.preventDefault();
+        }
+    });
+    
+    // Phone number validation
+    const phoneInput = document.querySelector('input[name="phone"]');
+    phoneInput.addEventListener('input', function() {
+        const phone = this.value.replace(/\D/g, '');
+        if (phone.length === 10) {
+            this.style.borderColor = '#10b981';
+        } else if (phone.length > 0) {
+            this.style.borderColor = '#f59e0b';
+        } else {
+            this.style.borderColor = '#e5e7eb';
+        }
+    });
+    
+    // Auto-format phone number
+    phoneInput.addEventListener('input', function() {
+        let value = this.value.replace(/\D/g, '');
+        if (value.length >= 6) {
+            value = value.replace(/(\d{5})(\d{5})/, '$1 $2');
+        }
+        this.value = value;
+    });
+    
+    // PIN code validation
+    const pinInput = document.querySelector('input[name="pin"]');
+    pinInput.addEventListener('input', function() {
+        const pin = this.value;
+        if (pin.length === 6) {
+            this.style.borderColor = '#10b981';
+        } else if (pin.length > 0) {
+            this.style.borderColor = '#f59e0b';
+        } else {
+            this.style.borderColor = '#e5e7eb';
+        }
+    });
+});
+
+// Payment method selection function
+function selectPayment(paymentType, element) {
+    // Remove active state from all payment options
+    const paymentOptions = document.querySelectorAll('.payment-option');
+    paymentOptions.forEach(option => {
+        option.style.borderColor = '#e5e7eb';
+        option.style.background = '#f9fafb';
+    });
+    
+    // Add active state to selected option
+    element.style.borderColor = '#667eea';
+    element.style.background = '#ede9fe';
+    
+    // Check the radio button
+    const radio = element.querySelector('input[type="radio"]');
+    radio.checked = true;
+    
+    // Update submit button text based on payment method
+    const submitButton = document.querySelector('button[type="submit"]');
+    const selectedMethod = radio.value;
+    
+    if (selectedMethod === 'Cash On Delivery') {
+        submitButton.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>Place Order';
+    } else {
+        submitButton.innerHTML = '<i class="fas fa-credit-card" style="margin-right: 0.5rem;"></i>Proceed to Payment';
+    }
+    
+    // Show payment method specific information
+    showPaymentInfo(paymentType);
+}
+
+function showPaymentInfo(paymentType) {
+    // Remove any existing payment info
+    const existingInfo = document.querySelector('.payment-info');
+    if (existingInfo) {
+        existingInfo.remove();
+    }
+    
+    let infoText = '';
+    let infoColor = '';
+    
+    switch(paymentType) {
+        case 'cod':
+            infoText = 'You will pay when the order is delivered to your address.';
+            infoColor = '#10b981';
+            break;
+        case 'razorpay':
+            infoText = 'You will be redirected to Razorpay\'s secure payment gateway to complete your payment.';
+            infoColor = '#667eea';
+            break;
+    }
+    
+    if (infoText) {
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'payment-info';
+        infoDiv.style.cssText = `
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: ${infoColor}20;
+            border-left: 4px solid ${infoColor};
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #374151;
+        `;
+        infoDiv.innerHTML = `<i class="fas fa-info-circle" style="color: ${infoColor}; margin-right: 0.5rem;"></i>${infoText}`;
+        
+        const paymentSection = document.querySelector('[onclick*="selectPayment"]:checked').closest('.payment-option');
+        paymentSection.appendChild(infoDiv);
+    }
+}
+
+// Initialize payment selection
+document.addEventListener('DOMContentLoaded', function() {
+    // Set initial state for COD
+    const codOption = document.querySelector('.payment-option:first-child');
+    if (codOption) {
+        selectPayment('cod', codOption);
+    }
+    
+    // Add hover effects for payment options
+    const paymentOptions = document.querySelectorAll('.payment-option');
+    paymentOptions.forEach(option => {
+        option.addEventListener('mouseenter', function() {
+            if (!this.querySelector('input[type="radio"]').checked) {
+                this.style.borderColor = '#667eea';
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.15)';
+            }
+        });
+        
+        option.addEventListener('mouseleave', function() {
+            if (!this.querySelector('input[type="radio"]').checked) {
+                this.style.borderColor = '#e5e7eb';
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

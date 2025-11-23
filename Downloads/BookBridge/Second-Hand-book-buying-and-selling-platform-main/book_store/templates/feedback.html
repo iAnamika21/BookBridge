@@ -1,0 +1,463 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Page Header -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 6rem 0 4rem; margin-top: 80px; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 style="color: white; font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; position: relative; z-index: 2;">
+                    <i class="fas fa-comment-dots" style="margin-right: 1rem;"></i>
+                    Get In Touch
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; max-width: 600px; margin: 0 auto; position: relative; z-index: 2;">
+                    We'd love to hear from you! Share your feedback, questions, or suggestions
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-8 mb-4">
+                <div style="background: white; border-radius: 20px; padding: 3rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <h3 style="color: #1f2937; font-weight: 700; margin-bottom: 2rem; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-paper-plane" style="color: #667eea;"></i>
+                        Send us a Message
+                    </h3>
+                    
+                    <!-- Success/Error Messages -->
+                    {% if error %}
+                    <div style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>{{ error }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if success %}
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-check-circle"></i>
+                        <span>{{ success }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <form action="/feedback" method="post" class="contact-form">
+                        {% csrf_token %}
+                        
+                        <!-- Name and Email Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-user" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Your Name
+                                    </label>
+                                    <input type="text" name="name" required
+                                           placeholder="Enter your full name"
+                                           value="{{values.name}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-envelope" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Email Address
+                                    </label>
+                                    <input type="email" name="email" required
+                                           placeholder="Enter your email address"
+                                           value="{{values.email}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Phone and Subject Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-phone" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Phone Number (Optional)
+                                    </label>
+                                    <input type="tel" name="phone"
+                                           placeholder="Enter your phone number"
+                                           value="{{values.phone}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-tag" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Subject
+                                    </label>
+                                    <select name="subject" required
+                                            style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                        <option value="">Select a subject</option>
+                                        <option value="general" {% if values.subject == 'general' %}selected{% endif %}>General Inquiry</option>
+                                        <option value="feedback" {% if values.subject == 'feedback' %}selected{% endif %}>Website Feedback</option>
+                                        <option value="support" {% if values.subject == 'support' %}selected{% endif %}>Customer Support</option>
+                                        <option value="suggestion" {% if values.subject == 'suggestion' %}selected{% endif %}>Suggestion</option>
+                                        <option value="complaint" {% if values.subject == 'complaint' %}selected{% endif %}>Complaint</option>
+                                        <option value="other" {% if values.subject == 'other' %}selected{% endif %}>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Message -->
+                        <div class="form-group mb-4">
+                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                <i class="fas fa-comment" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                Your Message
+                            </label>
+                            <textarea name="message" rows="6" required
+                                      placeholder="Tell us what's on your mind..."
+                                      style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb; resize: vertical; min-height: 150px;">{{values.message}}</textarea>
+                        </div>
+                        
+                        <!-- Rating (Optional) -->
+                        <div class="form-group mb-4">
+                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                <i class="fas fa-star" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                Rate Your Experience (Optional)
+                            </label>
+                            <div class="rating-input" style="display: flex; gap: 0.5rem; align-items: center;">
+                                <span style="color: #6b7280; margin-right: 1rem;">Poor</span>
+                                {% for i in "12345" %}
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="rating" value="{{ i }}" style="display: none;" {% if values.rating == i %}checked{% endif %}>
+                                    <i class="fas fa-star rating-star" style="font-size: 1.5rem; color: #e5e7eb; transition: color 0.2s ease;" data-rating="{{ i }}"></i>
+                                </label>
+                                {% endfor %}
+                                <span style="color: #6b7280; margin-left: 1rem;">Excellent</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1rem 2rem; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-paper-plane"></i>
+                            <span class="button-text">Send Message</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="col-lg-4">
+                <div style="background: white; border-radius: 20px; padding: 2.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: sticky; top: 100px;">
+                    <h4 style="color: #1f2937; font-weight: 700; margin-bottom: 2rem; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-address-book" style="color: #667eea;"></i>
+                        Contact Information
+                    </h4>
+                    
+                    <!-- Contact Items -->
+                    <div class="contact-info">
+                        <!-- Address -->
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border-left: 4px solid #667eea;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-map-marker-alt" style="color: white; font-size: 1.25rem;"></i>
+                            </div>
+                            <div>
+                                <h6 style="color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">Visit Us</h6>
+                                <p style="color: #6b7280; margin: 0; line-height: 1.5;">
+                                    Raniganj, Araria ,Bihar<br>
+                                    India
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Phone -->
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: #f0fdf4; border-radius: 12px; border-left: 4px solid #10b981;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-phone" style="color: white; font-size: 1.25rem;"></i>
+                            </div>
+                            <div>
+                                <h6 style="color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;"> For more Inquiry </h6>
+                                <p style="color: #6b7280; margin: 0;">
+                                    <a href="tel:+917894561230" style="color: #059669; text-decoration: none; font-weight: 500;">+91 98987 67654</a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: #fef3c7; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-envelope" style="color: white; font-size: 1.25rem;"></i>
+                            </div>
+                            <div>
+                                <h6 style="color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">Email Us</h6>
+                                <p style="color: #6b7280; margin: 0;">
+                                    <a href="mailto:hello@boomerangbooks.com" style="color: #d97706; text-decoration: none; font-weight: 500;">hello@boomerangbooks.com</a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Business Hours -->
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.5rem; background: #fdf2f8; border-radius: 12px; border-left: 4px solid #ec4899;">
+                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-clock" style="color: white; font-size: 1.25rem;"></i>
+                            </div>
+                            <div>
+                                <h6 style="color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">Business Hours</h6>
+                                <p style="color: #6b7280; margin: 0; line-height: 1.5; font-size: 0.9rem;">
+                                    Monday - Friday: 9:00 AM - 6:00 PM<br>
+                                    Saturday: 10:00 AM - 4:00 PM<br>
+                                    Sunday: Closed
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Links -->
+                    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+                        <h6 style="color: #1f2937; font-weight: 600; margin-bottom: 1rem;">Quick Actions</h6>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <a href="{% url 'shop' %}" style="display: flex; align-items: center; padding: 0.75rem 1rem; background: #eff6ff; color: #2563eb; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease;">
+                                <i class="fas fa-book" style="margin-right: 0.75rem;"></i>
+                                Browse Books
+                            </a>
+                            <a href="/sell" style="display: flex; align-items: center; padding: 0.75rem 1rem; background: #f0fdf4; color: #059669; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease;">
+                                <i class="fas fa-plus-circle" style="margin-right: 0.75rem;"></i>
+                                Sell Your Books
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 style="color: #1f2937; font-weight: 700; margin-bottom: 1rem; font-family: 'Playfair Display', serif; font-size: 2.5rem;">
+                    Frequently Asked Questions
+                </h2>
+                <p style="color: #6b7280; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+                    Find quick answers to common questions about our service
+                </p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <!-- FAQ 1 -->
+                    <div style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #e5e7eb;" onclick="toggleFaq(1)">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h6 style="color: #1f2937; font-weight: 600; margin: 0;">How do I sell my books on your platform?</h6>
+                                <i class="fas fa-chevron-down" style="color: #667eea; transition: transform 0.3s ease;" id="faq-icon-1"></i>
+                            </div>
+                        </div>
+                        <div id="faq-content-1" style="display: none; padding: 0 1.5rem 1.5rem;">
+                            <p style="color: #6b7280; margin: 0; line-height: 1.6;">
+                                Simply create an account, go to the "Sell Your Books" section, upload photos of your books, 
+                                add descriptions, set your price, and list them. Our team will review and approve your listings 
+                                within 24 hours.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ 2 -->
+                    <div style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #e5e7eb;" onclick="toggleFaq(2)">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h6 style="color: #1f2937; font-weight: 600; margin: 0;">What payment methods do you accept?</h6>
+                                <i class="fas fa-chevron-down" style="color: #667eea; transition: transform 0.3s ease;" id="faq-icon-2"></i>
+                            </div>
+                        </div>
+                        <div id="faq-content-2" style="display: none; padding: 0 1.5rem 1.5rem;">
+                            <p style="color: #6b7280; margin: 0; line-height: 1.6;">
+                                We accept Cash on Delivery (COD) and online payments through credit/debit cards, 
+                                net banking, and popular digital wallets. All online transactions are secure and encrypted.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ 3 -->
+                    <div style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #e5e7eb;" onclick="toggleFaq(3)">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h6 style="color: #1f2937; font-weight: 600; margin: 0;">How long does delivery take?</h6>
+                                <i class="fas fa-chevron-down" style="color: #667eea; transition: transform 0.3s ease;" id="faq-icon-3"></i>
+                            </div>
+                        </div>
+                        <div id="faq-content-3" style="display: none; padding: 0 1.5rem 1.5rem;">
+                            <p style="color: #6b7280; margin: 0; line-height: 1.6;">
+                                We typically deliver within 2-3 business days for local orders and 3-5 business days 
+                                for orders outside the city. You'll receive tracking information once your order is shipped.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Form Input Focus Effects */
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Button Hover Effects */
+.contact-form button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* Rating Stars */
+.rating-star:hover,
+.rating-star.active {
+    color: #fbbf24 !important;
+}
+
+/* Quick Links Hover */
+.contact-info a:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Loading State */
+.contact-form button[type="submit"].loading {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.contact-form button[type="submit"].loading .button-text {
+    display: none;
+}
+
+.contact-form button[type="submit"].loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Background */
+.bg-light {
+    background-color: #f8fafc !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-info {
+        margin-top: 2rem;
+    }
+    
+    .contact-form {
+        padding: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 2.5rem !important;
+    }
+    
+    .rating-input {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+</style>
+
+<script>
+// Rating System
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.rating-star');
+    const ratingInputs = document.querySelectorAll('input[name="rating"]');
+    
+    stars.forEach((star, index) => {
+        star.addEventListener('mouseover', function() {
+            highlightStars(index + 1);
+        });
+        
+        star.addEventListener('click', function() {
+            const rating = this.getAttribute('data-rating');
+            ratingInputs[index].checked = true;
+            highlightStars(rating);
+        });
+    });
+    
+    // Reset on mouse leave
+    document.querySelector('.rating-input').addEventListener('mouseleave', function() {
+        const checkedRating = document.querySelector('input[name="rating"]:checked');
+        if (checkedRating) {
+            highlightStars(checkedRating.value);
+        } else {
+            highlightStars(0);
+        }
+    });
+    
+    function highlightStars(rating) {
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.style.color = '#fbbf24';
+            } else {
+                star.style.color = '#e5e7eb';
+            }
+        });
+    }
+    
+    // Initialize rating display
+    const checkedRating = document.querySelector('input[name="rating"]:checked');
+    if (checkedRating) {
+        highlightStars(checkedRating.value);
+    }
+    
+    // Form submission loading state
+    const form = document.querySelector('.contact-form');
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', function(e) {
+        submitButton.classList.add('loading');
+        submitButton.disabled = true;
+        
+        // Remove loading state after form submission (in case of errors)
+        setTimeout(() => {
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+        }, 3000);
+    });
+});
+
+// FAQ Toggle
+function toggleFaq(faqNumber) {
+    const content = document.getElementById(`faq-content-${faqNumber}`);
+    const icon = document.getElementById(`faq-icon-${faqNumber}`);
+    
+    if (content.style.display === 'none' || content.style.display === '') {
+        content.style.display = 'block';
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        content.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+</script>
+{% endblock %}

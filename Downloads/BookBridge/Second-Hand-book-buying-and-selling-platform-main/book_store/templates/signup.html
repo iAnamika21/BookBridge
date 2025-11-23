@@ -1,0 +1,662 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Signup Page -->
+<section style="min-height: 100vh; display: flex; align-items: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-11 col-xl-10">
+                <div class="signup-container" style="background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                    <div class="row g-0">
+                        <!-- Left Side - Welcome Section -->
+                        <div class="col-lg-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; position: relative; overflow: hidden;">
+                            <!-- Background Pattern -->
+                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);"></div>
+                            
+                            <!-- Floating Shapes -->
+                            <div class="floating-shapes" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
+                                <div style="position: absolute; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; top: 15%; left: 10%; animation: float 6s ease-in-out infinite;"></div>
+                                <div style="position: absolute; width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 50%; top: 70%; right: 20%; animation: float 6s ease-in-out infinite 2s;"></div>
+                                <div style="position: absolute; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%; bottom: 20%; left: 15%; animation: float 6s ease-in-out infinite 4s;"></div>
+                            </div>
+
+                            <div class="welcome-content text-center" style="position: relative; z-index: 2; color: white;">
+                                <!-- Logo -->
+                                <div class="logo-section mb-4">
+                                    <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; backdrop-filter: blur(10px);">
+                                        <i class="fas fa-user-plus" style="font-size: 2rem; color: white;"></i>
+                                    </div>
+                                    <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
+                                        Join Us Today!
+                                    </h2>
+                                </div>
+
+                                <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; line-height: 1.6;">
+                                    Create your account and start exploring thousands of quality second-hand books at incredible prices.
+                                </p>
+
+                                <!-- Benefits -->
+                                <div class="benefits-list text-left" style="max-width: 300px; margin: 0 auto;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                        <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                            <i class="fas fa-check" style="color: white;"></i>
+                                        </div>
+                                        <span style="font-size: 0.95rem;">Free account registration</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                        <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                            <i class="fas fa-shipping-fast" style="color: white;"></i>
+                                        </div>
+                                        <span style="font-size: 0.95rem;">Fast & secure delivery</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                            <i class="fas fa-heart" style="color: white;"></i>
+                                        </div>
+                                        <span style="font-size: 0.95rem;">Eco-friendly reading</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side - Signup Form -->
+                        <div class="col-lg-7" style="padding: 3rem 2rem; max-height: 100vh; overflow-y: auto;">
+                            <div class="signup-form-container" style="width: 100%;">
+                                <!-- Header -->
+                                <div class="form-header text-center mb-4">
+                                    <h3 style="color: #1f2937; font-weight: 700; margin-bottom: 0.5rem; font-family: 'Playfair Display', serif;">
+                                        Create Account
+                                    </h3>
+                                    <p style="color: #6b7280; font-size: 0.95rem;">
+                                        Fill in your details to get started
+                                    </p>
+                                </div>
+
+                                <!-- Progress Steps -->
+                                <div class="progress-steps mb-4" style="display: flex; justify-content: center; align-items: center; gap: 1rem;">
+                                    <div class="step active" style="width: 40px; height: 40px; border-radius: 50%; background: #667eea; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">1</div>
+                                    <div style="width: 40px; height: 2px; background: #e5e7eb;"></div>
+                                    <div class="step" style="width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb; color: #6b7280; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">2</div>
+                                    <div style="width: 40px; height: 2px; background: #e5e7eb;"></div>
+                                    <div class="step" style="width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb; color: #6b7280; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem;">3</div>
+                                </div>
+
+                                <!-- Error Message -->
+                                {% if error %}
+                                <div style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span>{{ error }}</span>
+                                </div>
+                                {% endif %}
+
+                                <!-- Signup Form -->
+                                <form action="/signup" method="post" class="signup-form" id="signupForm">
+                                    {% csrf_token %}
+                                    
+                                    <!-- Step 1: Personal Information -->
+                                    <div class="form-step active" id="step1">
+                                        <h5 style="color: #374151; font-weight: 600; margin-bottom: 1.5rem; text-align: center;">
+                                            Personal Information
+                                        </h5>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                        First Name
+                                                    </label>
+                                                    <div style="position: relative;">
+                                                        <input type="text" name="first_name" required
+                                                               value="{{values.first_name}}"
+                                                               placeholder="Enter your first name"
+                                                               style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                        <i class="fas fa-user" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                        Last Name
+                                                    </label>
+                                                    <div style="position: relative;">
+                                                        <input type="text" name="last_name" required
+                                                               value="{{values.last_name}}"
+                                                               placeholder="Enter your last name"
+                                                               style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                        <i class="fas fa-user" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                Email Address
+                                            </label>
+                                            <div style="position: relative;">
+                                                <input type="email" name="email" required
+                                                       value="{{values.email}}"
+                                                       placeholder="Enter your email address"
+                                                       style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                <i class="fas fa-envelope" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                Phone Number
+                                            </label>
+                                            <div style="position: relative;">
+                                                <input type="tel" name="phone" required
+                                                       value="{{values.phone}}"
+                                                       placeholder="Enter 10-digit phone number"
+                                                       pattern="[0-9]{10}"
+                                                       style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                <i class="fas fa-phone" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                            </div>
+                                        </div>
+
+                                        <button type="button" onclick="nextStep()" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1rem; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                                            Continue
+                                            <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Step 2: Address Information -->
+                                    <div class="form-step" id="step2" style="display: none;">
+                                        <h5 style="color: #374151; font-weight: 600; margin-bottom: 1.5rem; text-align: center;">
+                                            Address Information
+                                        </h5>
+
+                                        <div class="form-group mb-3">
+                                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                Street Address
+                                            </label>
+                                            <div style="position: relative;">
+                                                <input type="text" name="address" required
+                                                       value="{{values.address}}"
+                                                       placeholder="Enter your street address"
+                                                       style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                <i class="fas fa-home" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                        City
+                                                    </label>
+                                                    <div style="position: relative;">
+                                                        <input type="text" name="city" required
+                                                               value="{{values.city}}"
+                                                               placeholder="Enter your city"
+                                                               style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                        <i class="fas fa-city" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-3">
+                                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                        Pincode
+                                                    </label>
+                                                    <div style="position: relative;">
+                                                        <input type="text" name="pin" required
+                                                               value="{{values.pin}}"
+                                                               placeholder="Enter pincode"
+                                                               pattern="[0-9]{6}"
+                                                               style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                        <i class="fas fa-map-pin" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                Landmark (Optional)
+                                            </label>
+                                            <div style="position: relative;">
+                                                <input type="text" name="landmark"
+                                                       value="{{values.landmark}}"
+                                                       placeholder="Enter nearby landmark"
+                                                       style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                <i class="fas fa-map-marker-alt" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                            </div>
+                                        </div>
+
+                                        <div style="display: flex; gap: 1rem;">
+                                            <button type="button" onclick="prevStep()" style="flex: 1; background: #f3f4f6; color: #374151; border: 2px solid #e5e7eb; padding: 1rem; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                                                <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+                                                Back
+                                            </button>
+                                            <button type="button" onclick="nextStep()" style="flex: 2; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 1rem; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                                                Continue
+                                                <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 3: Password Setup -->
+                                    <div class="form-step" id="step3" style="display: none;">
+                                        <h5 style="color: #374151; font-weight: 600; margin-bottom: 1.5rem; text-align: center;">
+                                            Set Your Password
+                                        </h5>
+
+                                        <div class="form-group mb-3">
+                                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                Password
+                                            </label>
+                                            <div style="position: relative;">
+                                                <input type="password" name="password" required
+                                                       placeholder="Create a strong password"
+                                                       id="password"
+                                                       style="width: 100%; padding: 1rem 3rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                <i class="fas fa-lock" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                                <button type="button" onclick="togglePassword('password')" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #9ca3af; cursor: pointer; padding: 0.25rem;">
+                                                    <i class="fas fa-eye" id="toggleIcon1"></i>
+                                                </button>
+                                            </div>
+                                            <div class="password-strength mt-2" style="height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden;">
+                                                <div id="strengthBar" style="height: 100%; width: 0%; background: #ef4444; transition: all 0.3s ease;"></div>
+                                            </div>
+                                            <small id="strengthText" style="color: #6b7280; font-size: 0.75rem;">Enter at least 8 characters</small>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.875rem;">
+                                                Confirm Password
+                                            </label>
+                                            <div style="position: relative;">
+                                                <input type="password" name="confirm" required
+                                                       placeholder="Confirm your password"
+                                                       id="confirmPassword"
+                                                       style="width: 100%; padding: 1rem 3rem 1rem 3rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                                <i class="fas fa-lock" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
+                                                <button type="button" onclick="togglePassword('confirmPassword')" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #9ca3af; cursor: pointer; padding: 0.25rem;">
+                                                    <i class="fas fa-eye" id="toggleIcon2"></i>
+                                                </button>
+                                            </div>
+                                            <div id="passwordMatch" style="margin-top: 0.5rem; font-size: 0.75rem;"></div>
+                                        </div>
+
+                                        <!-- Terms and Conditions -->
+                                        <div style="margin-bottom: 2rem;">
+                                            <label style="display: flex; align-items: flex-start; color: #6b7280; font-size: 0.875rem; cursor: pointer; line-height: 1.5;">
+                                                <input type="checkbox" required style="margin-right: 0.75rem; margin-top: 0.25rem; accent-color: #667eea;">
+                                                I agree to the <a href="#" style="color: #667eea; text-decoration: none;">Terms of Service</a> and <a href="#" style="color: #667eea; text-decoration: none;">Privacy Policy</a>
+                                            </label>
+                                        </div>
+
+                                        <!-- Google reCAPTCHA -->
+                                        <!-- <div class="g-recaptcha mb-4" data-sitekey="6Lf5gxIbAAAAAJUA-PTnpbFlQilbImMK_Lbl_UiK"></div> -->
+
+                                        <div style="display: flex; gap: 1rem;">
+                                            <button type="button" onclick="prevStep()" style="flex: 1; background: #f3f4f6; color: #374151; border: 2px solid #e5e7eb; padding: 1rem; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                                                <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+                                                Back
+                                            </button>
+                                            <button type="submit" style="flex: 2; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 1rem; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                                                <span class="button-text">Create Account</span>
+                                                <i class="fas fa-check" style="margin-left: 0.5rem;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- Already have account -->
+                                <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+                                    <p style="color: #6b7280; margin-bottom: 1rem;">Already have an account?</p>
+                                    <a href="{% url 'login' %}" style="color: #667eea; text-decoration: none; font-weight: 600;">
+                                        <i class="fas fa-sign-in-alt" style="margin-right: 0.5rem;"></i>
+                                        Sign In Here
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Form Input Focus Effects */
+.signup-form input:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Button Hover Effects */
+.signup-form button:hover {
+    transform: translateY(-2px);
+}
+
+/* Step transitions */
+.form-step {
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Password strength colors */
+.strength-weak { background: #ef4444 !important; }
+.strength-medium { background: #f59e0b !important; }
+.strength-strong { background: #10b981 !important; }
+
+/* Progress steps */
+.step.active {
+    background: #667eea !important;
+    color: white !important;
+}
+
+.step.completed {
+    background: #10b981 !important;
+    color: white !important;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .signup-container .col-lg-5 {
+        display: none;
+    }
+    
+    .signup-container {
+        margin: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .signup-container .col-lg-7 {
+        padding: 2rem 1.5rem;
+    }
+    
+    .form-header h3 {
+        font-size: 1.75rem;
+    }
+    
+    .progress-steps {
+        gap: 0.5rem;
+    }
+    
+    .progress-steps .step {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Loading state */
+.signup-form button[type="submit"].loading {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.signup-form button[type="submit"].loading .button-text {
+    display: none;
+}
+
+.signup-form button[type="submit"].loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Custom scrollbar for form area */
+.col-lg-7::-webkit-scrollbar {
+    width: 6px;
+}
+
+.col-lg-7::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.col-lg-7::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 3px;
+}
+</style>
+
+<script>
+let currentStep = 1;
+const totalSteps = 3;
+
+function nextStep() {
+    if (validateCurrentStep()) {
+        if (currentStep < totalSteps) {
+            // Hide current step
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            
+            // Update progress
+            document.querySelectorAll('.step')[currentStep - 1].classList.add('completed');
+            currentStep++;
+            document.querySelectorAll('.step')[currentStep - 1].classList.add('active');
+            
+            // Show next step
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+        }
+    }
+}
+
+function prevStep() {
+    if (currentStep > 1) {
+        // Hide current step
+        document.getElementById(`step${currentStep}`).style.display = 'none';
+        
+        // Update progress
+        document.querySelectorAll('.step')[currentStep - 1].classList.remove('active');
+        currentStep--;
+        document.querySelectorAll('.step')[currentStep - 1].classList.remove('completed');
+        
+        // Show previous step
+        document.getElementById(`step${currentStep}`).style.display = 'block';
+    }
+}
+
+function validateCurrentStep() {
+    const currentStepElement = document.getElementById(`step${currentStep}`);
+    const inputs = currentStepElement.querySelectorAll('input[required]');
+    let isValid = true;
+    
+    inputs.forEach(input => {
+        if (!input.value.trim()) {
+            input.style.borderColor = '#ef4444';
+            isValid = false;
+        } else {
+            input.style.borderColor = '#10b981';
+        }
+    });
+    
+    if (!isValid) {
+        // Show error message
+        showToast('Please fill in all required fields', 'error');
+    }
+    
+    return isValid;
+}
+
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(inputId === 'password' ? 'toggleIcon1' : 'toggleIcon2');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+function checkPasswordStrength(password) {
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+    
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+    if (password.match(/[0-9]/)) strength++;
+    if (password.match(/[^a-zA-Z0-9]/)) strength++;
+    
+    const percentage = (strength / 4) * 100;
+    strengthBar.style.width = percentage + '%';
+    
+    if (strength < 2) {
+        strengthBar.className = 'strength-weak';
+        strengthText.textContent = 'Weak password';
+        strengthText.style.color = '#ef4444';
+    } else if (strength < 3) {
+        strengthBar.className = 'strength-medium';
+        strengthText.textContent = 'Medium strength';
+        strengthText.style.color = '#f59e0b';
+    } else {
+        strengthBar.className = 'strength-strong';
+        strengthText.textContent = 'Strong password';
+        strengthText.style.color = '#10b981';
+    }
+}
+
+function checkPasswordMatch() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const matchDiv = document.getElementById('passwordMatch');
+    
+    if (confirmPassword.length > 0) {
+        if (password === confirmPassword) {
+            matchDiv.innerHTML = '<span style="color: #10b981;"><i class="fas fa-check"></i> Passwords match</span>';
+        } else {
+            matchDiv.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-times"></i> Passwords do not match</span>';
+        }
+    } else {
+        matchDiv.innerHTML = '';
+    }
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        z-index: 10000;
+        background: ${type === 'error' ? '#ef4444' : '#10b981'};
+        animation: slideInRight 0.3s ease;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const form = document.getElementById('signupForm');
+    
+    passwordInput.addEventListener('input', function() {
+        checkPasswordStrength(this.value);
+    });
+    
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+    
+    // Form submission
+    form.addEventListener('submit', function(e) {
+        const submitButton = this.querySelector('button[type="submit"]');
+        submitButton.classList.add('loading');
+        submitButton.disabled = true;
+        
+        // Remove loading state after form submission (in case of errors)
+        setTimeout(() => {
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+        }, 3000);
+    });
+    
+    // Real-time validation
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.hasAttribute('required') && !this.value.trim()) {
+                this.style.borderColor = '#ef4444';
+            } else {
+                this.style.borderColor = '#10b981';
+            }
+        });
+        
+        input.addEventListener('focus', function() {
+            this.style.borderColor = '#667eea';
+        });
+    });
+    
+    // Phone number validation
+    const phoneInput = document.querySelector('input[name="phone"]');
+    phoneInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+    });
+    
+    // Pin code validation
+    const pinInput = document.querySelector('input[name="pin"]');
+    pinInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+    });
+});
+
+// Add CSS for toast animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(100px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

@@ -1,0 +1,485 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load cart %}
+
+{% block content %}
+<!-- Page Header -->
+<section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 6rem 0 4rem; margin-top: 80px; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 style="color: white; font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; position: relative; z-index: 2;">
+                    <i class="fas fa-plus-circle" style="margin-right: 1rem;"></i>
+                    Sell Your Books
+                </h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; max-width: 600px; margin: 0 auto; position: relative; z-index: 2;">
+                    Turn your old books into cash! List your books on our platform and reach thousands of book lovers
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Sell With Us Section -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 style="color: #1f2937; font-weight: 700; margin-bottom: 1rem; font-family: 'Playfair Display', serif; font-size: 2.5rem;">
+                    Why Sell With Boomerang Books?
+                </h2>
+                <p style="color: #6b7280; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+                    Join thousands of sellers who have successfully turned their old books into cash
+                </p>
+            </div>
+        </div>
+        <div class="row g-4 mb-5">
+            <!-- Benefit 1 -->
+            <div class="col-lg-4 col-md-6">
+                <div style="text-align: center; padding: 2rem; transition: all 0.3s ease;" class="animate-on-scroll benefit-card">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-dollar-sign" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <h4 style="color: #1f2937; font-weight: 600; margin-bottom: 1rem;">Fair Pricing</h4>
+                    <p style="color: #6b7280; line-height: 1.6;">
+                        Set your own prices and get the best value for your books. No hidden fees or commissions.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Benefit 2 -->
+            <div class="col-lg-4 col-md-6">
+                <div style="text-align: center; padding: 2rem; transition: all 0.3s ease;" class="animate-on-scroll benefit-card">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-shipping-fast" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <h4 style="color: #1f2937; font-weight: 600; margin-bottom: 1rem;">Easy Process</h4>
+                    <p style="color: #6b7280; line-height: 1.6;">
+                        Simple 3-step process: Upload photos, add details, and start selling immediately.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Benefit 3 -->
+            <div class="col-lg-4 col-md-6">
+                <div style="text-align: center; padding: 2rem; transition: all 0.3s ease;" class="animate-on-scroll benefit-card">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-users" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <h4 style="color: #1f2937; font-weight: 600; margin-bottom: 1rem;">Wide Reach</h4>
+                    <p style="color: #6b7280; line-height: 1.6;">
+                        Access to thousands of active book buyers looking for quality second-hand books.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sell Form Section -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <!-- Form Instructions -->
+            <div class="col-lg-4 mb-4">
+                <div style="background: white; border-radius: 20px; padding: 2.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: sticky; top: 100px;">
+                    <h4 style="color: #1f2937; font-weight: 700; margin-bottom: 2rem; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-info-circle" style="color: #667eea;"></i>
+                        How to Sell
+                    </h4>
+                    
+                    <!-- Steps -->
+                    <div class="selling-steps">
+                        <!-- Step 1 -->
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: #f0fdf4; border-radius: 12px; border-left: 4px solid #10b981;">
+                            <div style="width: 40px; height: 40px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-weight: 700;">
+                                1
+                            </div>
+                            <div>
+                                <h6 style="color: #065f46; font-weight: 600; margin-bottom: 0.5rem;">Upload Photos</h6>
+                                <p style="color: #6b7280; margin: 0; font-size: 0.9rem; line-height: 1.5;">
+                                    Take clear photos of your book cover and any damages for transparency.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: #eff6ff; border-radius: 12px; border-left: 4px solid #2563eb;">
+                            <div style="width: 40px; height: 40px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-weight: 700;">
+                                2
+                            </div>
+                            <div>
+                                <h6 style="color: #1e40af; font-weight: 600; margin-bottom: 0.5rem;">Add Details</h6>
+                                <p style="color: #6b7280; margin: 0; font-size: 0.9rem; line-height: 1.5;">
+                                    Fill in book information, condition, and set your selling price.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.5rem; background: #fef3c7; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                            <div style="width: 40px; height: 40px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-weight: 700;">
+                                3
+                            </div>
+                            <div>
+                                <h6 style="color: #92400e; font-weight: 600; margin-bottom: 0.5rem;">Start Selling</h6>
+                                <p style="color: #6b7280; margin: 0; font-size: 0.9rem; line-height: 1.5;">
+                                    Your book goes live immediately and buyers can start purchasing.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Support -->
+                    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+                        <h6 style="color: #1f2937; font-weight: 600; margin-bottom: 1rem;">Need Help?</h6>
+                        <a href="/feedback" style="display: flex; align-items: center; padding: 0.75rem 1rem; background: #eff6ff; color: #2563eb; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease;">
+                            <i class="fas fa-headset" style="margin-right: 0.75rem;"></i>
+                            Contact Support
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sell Form -->
+            <div class="col-lg-8">
+                <div style="background: white; border-radius: 20px; padding: 3rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <h3 style="color: #1f2937; font-weight: 700; margin-bottom: 2rem; font-family: 'Playfair Display', serif; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-book-open" style="color: #667eea;"></i>
+                        List Your Book
+                    </h3>
+                    
+                    <!-- Success/Error Messages -->
+                    {% if error %}
+                    <div style="background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>{{ error }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if success %}
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-check-circle"></i>
+                        <span>{{ success }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <form action="/sell" method="post" enctype="multipart/form-data" class="sell-form">
+                        {% csrf_token %}
+                        
+                        <!-- Book Image -->
+                        <div class="form-group mb-4">
+                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                <i class="fas fa-camera" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                Book Photo <span style="color: #ef4444;">*</span>
+                            </label>
+                            <div style="border: 2px dashed #e5e7eb; border-radius: 12px; padding: 2rem; text-align: center; background: #f9fafb; transition: all 0.3s ease;" class="image-upload-area">
+                                <input type="file" name="image" required accept="image/*" id="imageInput" style="display: none;">
+                                <div id="uploadText">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
+                                    <p style="color: #6b7280; margin-bottom: 0.5rem; font-weight: 500;">Click to upload book photo</p>
+                                    <p style="color: #9ca3af; font-size: 0.875rem; margin: 0;">JPG, PNG or JPEG (Max 5MB)</p>
+                                </div>
+                                <div id="imagePreview" style="display: none;">
+                                    <img id="previewImg" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
+                                    <p style="color: #059669; margin-top: 1rem; font-weight: 500;">
+                                        <i class="fas fa-check-circle"></i> Image uploaded successfully
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Book Details Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-book" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Book Title <span style="color: #ef4444;">*</span>
+                                    </label>
+                                    <input type="text" name="name" required
+                                           placeholder="Enter the book title"
+                                           value="{{values.name}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-user-edit" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Author <span style="color: #ef4444;">*</span>
+                                    </label>
+                                    <input type="text" name="author" required
+                                           placeholder="Enter the author's name"
+                                           value="{{values.author}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category and Price Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-tags" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Category <span style="color: #ef4444;">*</span>
+                                    </label>
+                                    <select name="category" required
+                                            style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                        <option value="">Select category</option>
+                                        {% for category in categories %}
+                                        <option value="{{category.id}}" {% if values.category == category.id %}selected{% endif %}>{{category.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-rupee-sign" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Selling Price <span style="color: #ef4444;">*</span>
+                                    </label>
+                                    <input type="number" name="price" required min="1"
+                                           placeholder="Enter your selling price"
+                                           value="{{values.price}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Stock and Condition Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-boxes" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Quantity <span style="color: #ef4444;">*</span>
+                                    </label>
+                                    <input type="number" name="stock" required min="1" max="100"
+                                           placeholder="How many copies do you have?"
+                                           value="{{values.stock}}"
+                                           style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                        <i class="fas fa-star" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                        Book Condition <span style="color: #ef4444;">*</span>
+                                    </label>
+                                    <select name="condition" required
+                                            style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb;">
+                                        <option value="">Select condition</option>
+                                        <option value="excellent" {% if values.condition == 'excellent' %}selected{% endif %}>Excellent - Like new</option>
+                                        <option value="good" {% if values.condition == 'good' %}selected{% endif %}>Good - Minor wear</option>
+                                        <option value="fair" {% if values.condition == 'fair' %}selected{% endif %}>Fair - Noticeable wear</option>
+                                        <option value="poor" {% if values.condition == 'poor' %}selected{% endif %}>Poor - Heavy wear</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="form-group mb-4">
+                            <label style="color: #374151; font-weight: 600; margin-bottom: 0.75rem; display: block; font-size: 0.875rem;">
+                                <i class="fas fa-align-left" style="margin-right: 0.5rem; color: #667eea;"></i>
+                                Description <span style="color: #ef4444;">*</span>
+                            </label>
+                            <textarea name="description" rows="4" required
+                                      placeholder="Describe the book condition, any damages, or special features..."
+                                      style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; outline: none; transition: all 0.3s ease; background: #f9fafb; resize: vertical; min-height: 120px;">{{values.description}}</textarea>
+                        </div>
+                        
+                        <!-- Terms Agreement -->
+                        <div class="form-group mb-4">
+                            <label style="display: flex; align-items: flex-start; color: #6b7280; font-size: 0.875rem; cursor: pointer; line-height: 1.5;">
+                                <input type="checkbox" required style="margin-right: 0.75rem; margin-top: 0.25rem; accent-color: #667eea;">
+                                I agree to the <a href="#" style="color: #667eea; text-decoration: none;">selling terms</a> and confirm that the information provided is accurate. I understand that false information may result in account suspension.
+                            </label>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 1rem 2rem; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-rocket"></i>
+                            <span class="button-text">List My Book</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Form Input Focus Effects */
+.sell-form input:focus,
+.sell-form select:focus,
+.sell-form textarea:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Image Upload Area */
+.image-upload-area {
+    cursor: pointer;
+}
+
+.image-upload-area:hover {
+    border-color: #667eea;
+    background: #f0f9ff;
+}
+
+/* Benefit Cards Hover */
+.benefit-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Button Hover Effects */
+.sell-form button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+}
+
+/* Loading State */
+.sell-form button[type="submit"].loading {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.sell-form button[type="submit"].loading .button-text {
+    display: none;
+}
+
+.sell-form button[type="submit"].loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Background */
+.bg-light {
+    background-color: #f8fafc !important;
+}
+
+/* Animation Classes */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.animate-on-scroll.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .selling-steps {
+        margin-top: 2rem;
+    }
+    
+    .sell-form {
+        padding: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 2.5rem !important;
+    }
+    
+    .image-upload-area {
+        padding: 1.5rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Image upload functionality
+    const imageInput = document.getElementById('imageInput');
+    const uploadArea = document.querySelector('.image-upload-area');
+    const uploadText = document.getElementById('uploadText');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    
+    uploadArea.addEventListener('click', () => {
+        imageInput.click();
+    });
+    
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                uploadText.style.display = 'none';
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Form submission loading state
+    const form = document.querySelector('.sell-form');
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', function(e) {
+        submitButton.classList.add('loading');
+        submitButton.disabled = true;
+        
+        // Remove loading state after form submission (in case of errors)
+        setTimeout(() => {
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+        }, 3000);
+    });
+    
+    // Real-time validation
+    const inputs = document.querySelectorAll('input[required], select[required], textarea[required]');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (!this.value.trim()) {
+                this.style.borderColor = '#ef4444';
+            } else {
+                this.style.borderColor = '#10b981';
+            }
+        });
+        
+        input.addEventListener('focus', function() {
+            this.style.borderColor = '#667eea';
+        });
+    });
+    
+    // Animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+});
+</script>
+{% endblock %}
